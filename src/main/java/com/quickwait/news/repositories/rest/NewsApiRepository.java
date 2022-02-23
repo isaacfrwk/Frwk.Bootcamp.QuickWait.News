@@ -1,31 +1,35 @@
 package com.quickwait.news.repositories.rest;
 
 import com.quickwait.news.dto.NewsResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Repository
 @Lazy
+@RequiredArgsConstructor
 public class NewsApiRepository {
 
     @Value("${uri.newsapi.api}")
     private String server;
 
-    @Value("${uri.newsapi.endpoint}")
-    private String endpoint;
-
     @Value("${uri.newsapi.apikey}")
     private String apiKey;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public NewsResponse getNews() {
-        String apiUrl = server + endpoint + "?q=Saúde&apiKey=" + apiKey;
+        String apiUrl = server +
+                "/top-headlines?category=health&country=br&languagept&apiKey=" + apiKey;
 
         try {
             return restTemplate.getForObject(apiUrl, NewsResponse.class);
@@ -33,6 +37,32 @@ public class NewsApiRepository {
             throw new HttpClientErrorException(e.getStatusCode(), e.getMessage());
         }
 
+    }
+
+    private HttpHeaders createHttpHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        return headers;
+    }
+
+    public NewsResponse getNewsByExchange() {
+        String apiUrl = server +
+                "/top-headlines?category=health&country=br&languagept&apiKey=" + apiKey;
+
+        try {
+            HttpHeaders headers = createHttpHeaders();
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+
+            final ResponseEntity<NewsResponse> responseEntity =
+                    restTemplate.exchange(
+                            builder.toUriString(),
+                            HttpMethod.GET,
+                            entity,
+                            NewsResponse.class);
+            return responseEntity.getBody();
+        } catch (HttpClientErrorException e) {
+            throw new HttpClientErrorException(e.getStatusCode(), e.getMessage());
+        }
     }
 
 }

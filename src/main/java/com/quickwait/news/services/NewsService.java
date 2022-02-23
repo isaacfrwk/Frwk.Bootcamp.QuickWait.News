@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Lazy
 @RequiredArgsConstructor
 @Service
@@ -18,4 +16,9 @@ public class NewsService {
     public NewsResponse getNews() {
         return newsApiRepository.getNews();
     }
+
+    public NewsResponse getNewsByExchange() {
+        return newsApiRepository.getNewsByExchange();
+    }
+
 }

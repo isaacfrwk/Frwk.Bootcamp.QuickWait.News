@@ -20,4 +20,10 @@ public class NewsResource {
         return ResponseEntity.ok(newsService.getNews());
     }
 
+    @GetMapping(value = "/exchange")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<NewsResponse> getTopHeadlinesNews() {
+        return ResponseEntity.ok(newsService.getNewsByExchange());
+    }
+
 }
