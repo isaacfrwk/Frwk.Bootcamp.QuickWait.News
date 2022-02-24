@@ -2,7 +2,6 @@ package com.quickwait.news.repositories.rest;
 
 import com.quickwait.news.dto.NewsResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpEntity;
@@ -27,26 +26,13 @@ public class NewsApiRepository {
 
     private final RestTemplate restTemplate;
 
+    private HttpHeaders createHttpHeaders() {
+        return new HttpHeaders();
+    }
+
     public NewsResponse getNews() {
         String apiUrl = server +
-                "/top-headlines?category=health&country=br&languagept&apiKey=" + apiKey;
-
-        try {
-            return restTemplate.getForObject(apiUrl, NewsResponse.class);
-        } catch (HttpClientErrorException e) {
-            throw new HttpClientErrorException(e.getStatusCode(), e.getMessage());
-        }
-
-    }
-
-    private HttpHeaders createHttpHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        return headers;
-    }
-
-    public NewsResponse getNewsByExchange() {
-        String apiUrl = server +
-                "/top-headlines?category=health&country=br&languagept&apiKey=" + apiKey;
+                "/top-headlines?category=health&country=br&language=pt&apiKey=" + apiKey;
 
         try {
             HttpHeaders headers = createHttpHeaders();
@@ -61,7 +47,7 @@ public class NewsApiRepository {
                             NewsResponse.class);
             return responseEntity.getBody();
         } catch (HttpClientErrorException e) {
-            throw new HttpClientErrorException(e.getStatusCode(), e.getMessage());
+            throw new HttpClientErrorException(e.getStatusCode());
         }
     }
 

@@ -17,8 +17,4 @@ public class NewsService {
         return newsApiRepository.getNews();
     }
 
-    public NewsResponse getNewsByExchange() {
-        return newsApiRepository.getNewsByExchange();
-    }
-
 }
