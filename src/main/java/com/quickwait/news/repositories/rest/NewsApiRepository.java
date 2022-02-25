@@ -1,6 +1,7 @@
 package com.quickwait.news.repositories.rest;
 
 import com.quickwait.news.dto.NewsResponse;
+import io.sentry.Sentry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -47,6 +48,7 @@ public class NewsApiRepository {
                             NewsResponse.class);
             return responseEntity.getBody();
         } catch (HttpClientErrorException e) {
+            Sentry.captureException(e);
             throw new HttpClientErrorException(e.getStatusCode());
         }
     }
