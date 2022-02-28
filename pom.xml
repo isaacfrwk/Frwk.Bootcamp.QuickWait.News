@@ -61,7 +61,6 @@
 			<version>5.6.1</version>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -109,6 +108,7 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<finalName>news</finalName>
 	</build>
 
 </project>
