@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 public class NewsArticleResponse implements Serializable {
-    private static final long serialVersionUID = 1L;
+    
+	private static final long serialVersionUID = 1L;
 
     private NewsArticleSourceResponse source;
 
@@ -22,6 +23,8 @@ public class NewsArticleResponse implements Serializable {
     private String description;
 
     private String url;
+
+    private String urlToImage;
 
     private LocalDateTime publishedAt;
 
