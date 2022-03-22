@@ -12,7 +12,7 @@
 	</parent>
 	
 	<groupId>com.quickwait</groupId>
-	<artifactId>news</artifactId>
+	<artifactId>news-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	
 	<name>news</name>
@@ -24,6 +24,7 @@
 		<sonar.sources>src/main/java/com/quickwait/news/services,src/main/java/com/quickwait/news/resources,src/main/java/com/quickwait/news/repositories</sonar.sources>
 		<spring-cloud.version>2021.0.1</spring-cloud.version>
 		<spring-doc-open-api.version>1.6.4</spring-doc-open-api.version>
+		<docker.image.prefix>danieldhsd</docker.image.prefix>
 	</properties>
 	
 	<dependencies>
@@ -135,6 +136,32 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<!-- This plugin is used to create a docker image and publish the image 
+				to docker hub -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.13</version>
+				<configuration>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+					<tag>${project.version}</tag>
+					<buildArgs>
+						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		
 		</plugins>
 		<finalName>news</finalName>
 	</build>
